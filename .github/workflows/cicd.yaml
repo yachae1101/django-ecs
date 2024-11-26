@@ -3,6 +3,10 @@ on:
   push:
     branches: ["main"]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,3 +29,11 @@ jobs:
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:$IMAGE_TAG
           docker push $NAME/$REPO:$IMAGE_TAG
+
+      # AWS 로그인
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: <자신의 ARN>
+          role-session-name: sampleSessionName
+          aws-region: ap-northeast-2
