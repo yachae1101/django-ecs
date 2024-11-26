@@ -29,7 +29,7 @@ jobs:
       - name: DockerHub Upload
         env:
           NAME: ${{ secrets.DOCKERHUB_USERNAME}}
-          REPO: djangoecs
+          REPO: django-ecs
         run: |
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
