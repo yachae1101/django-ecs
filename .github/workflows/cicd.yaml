@@ -21,3 +21,13 @@ jobs:
           role-to-assume: arn:aws:iam::788359277408:role/django-role
           role-session-name: sampleSessionName
           aws-region: ap-northeast-2
+
+      # image build 후, AWS ECR 에 push
+      - name: build and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/django-ecs:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/django-ecs:$IMAGE_TAG
