@@ -22,6 +22,11 @@ jobs:
           role-session-name: sampleSessionName
           aws-region: ap-northeast-2
 
+      # ECR에 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
       # image build 후, AWS ECR 에 push
       - name: build and push image to Amazon ECR
         id: build-image
@@ -30,4 +35,4 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/django-ecs:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$django-ecs:$IMAGE_TAG
+          docker push $ECR_REGISTRY/django-ecs:$IMAGE_TAG
